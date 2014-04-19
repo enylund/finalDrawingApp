@@ -51,6 +51,8 @@ socket.on('converter', function(data) {
 	 	
 	 	images.insert(newImage, function(err, inserted) {
 	           if (err) throw err; 
+			  var refresh = true;
+			  socket.emit('refreshPage', refresh);
 	 
 	         });
 
