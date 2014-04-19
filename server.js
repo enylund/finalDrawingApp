@@ -25,7 +25,7 @@ drawing_room
   .on('connection', function(socket) {
 	
 
-	images.find().sort({time: -1}).limit(4).each(function(err, message) {
+	images.find().sort({time: -1}).limit(1).each(function(err, message) {
 	         if (err) throw err;
 	         // An idiosyncracy of Mongo is that the last result will always be null.
 	         // Ignore that one. 
@@ -62,6 +62,6 @@ socket.on('converter', function(data) {
 
 });
 
-server.listen(Number(process.env.PORT || 8888));
+server.listen(Number(process.env.PORT || 5000));
 
 
