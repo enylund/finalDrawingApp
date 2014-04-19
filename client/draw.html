@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Drawing</title>
+<script type="text/javascript" src="paper-full.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://connect.soundcloud.com/sdk.js"></script>
+<link rel="stylesheet" type="text/css" href="MyFontsWebfontsKit.css">
+<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+
+<script type="text/javascript">
+	
+	  //
+	  // Initiate socket.io
+	  var socket = io.connect('http://localhost:8888');
+	
+	  // Define all tools globally
+	  var tool = new paper.Tool();
+	
+	  // format the time of creation
+	  var d = new Date();
+	  var n = d.toLocaleTimeString();
+
+
+     // Must use WINDOW LOAD to work with @font-face
+	  $(window).load(function(){
+		
+			
+           SC.initialize({
+                 client_id: 'a2befdf458b195d9dc90a309e9015eb4'
+           });
+
+            //console.log(requestedTrack);
+            //$("#jukeboxName").html(requestedTrack);
+
+			var genreNumber = Math.floor(1 + Math.random() * 4);
+
+			switch (genreNumber)
+			{
+			case 1:
+			  x="hiphop";
+			  break;
+			case 2:
+			  x="classical";
+			  break;
+			case 3:
+			  x="punk";
+			  break;
+			case 4:
+			  x="soul";
+			  break;
+			}
+			console.log(x);
+
+
+            //find all sounds of buskers licensed under 'creative commons share alike'
+         	   SC.get('/tracks', { genres: "drone"}, function(tracks) {
+         	                  var i = Math.floor(1 + Math.random() * 10);
+         	                  var trackTitle = tracks[i].title;
+         	                  var track_url = "/tracks/" + tracks[i].id;
+								
+								
+							SC.stream(track_url, function(sound){
+         	 				$( "#myCanvas" ).mousedown(function() {
+							  
+								  sound.play();
+								$( "#myCanvas" ).mouseup(function() {
+								 
+									  sound.pause();
+								
+								});
+								});
+							});
+						
+         	                  
+         	                  // setup paperjs canvas
+						    var canvas = document.getElementById("myCanvas");
+						    paper.setup(canvas);
+
+						    var myPath;
+							var	randomBackground = Math.floor(1 + Math.random() * 22);
+							$("#backgroundContainer").html("<img id='artworkImage' src='images/"+ randomBackground +".jpg' />");
+
+						    $('#artworkImage').hide();	
+
+							// Create a raster item using the image tag with id='mona'
+							var rasterBackground = new paper.Raster('artworkImage');
+
+
+
+							// Move the raster to the center of the view
+							rasterBackground.position = paper.view.center;
+
+							var topLeft = new paper.Point(10, 20);
+							var rectSize = new paper.Size(200, 100);
+							var rect = new paper.Rectangle(topLeft, rectSize);
+							rect.fillColor = 'red';
+
+							var	randomHue = Math.random() * 360;
+
+
+							 tool.onMouseDown = function (event) {
+								myPath = new paper.Path();
+								myPath.strokeColor = {
+										hue: randomHue,
+										saturation: 1,
+										brightness: 1
+									};
+
+								myPath.blendMode = 'difference';
+								myPath.strokeWidth = 20;
+								myPath.strokeCap = 'round';
+								myPath.smooth();
+							}
+
+
+
+							tool.onMouseDrag = function (event) {
+								
+								if(event.point.x<0) {	
+									myPath.add(0, event.point.y);
+							    } else if(event.point.y<0) {
+									myPath.add(event.point.x, 0);
+							    } else if(event.point.y>920) {
+									myPath.add(event.point.x, 920);
+								} else if(event.point.x>650) {
+									myPath.add(650, event.point.y);
+								} else {
+								myPath.add([event.point.x, event.point.y] );
+							    }
+							}
+								
+								
+								$("#save").click(function() {
+									//var savings = paper.project.exportSVG();
+									//var stringedSVG = (new XMLSerializer()).serializeToString(savings);
+									var tester = canvas.toDataURL();
+									
+									socket.emit('converter', { canvas: tester, track: track_url, background: randomBackground });
+												
+								});
+
+								$('#refresh').click(function() {
+								    location.reload();
+								});
+         	            });
+		
+		
+			
+		
+         	});
+
+
+
+	</script>
+
+	<canvas id="myCanvas"></canvas>
+	<nav><span id='refresh'>Refresh</span><span id="save"><a href="index.html">Save</a></span><span id="save"><a href="index.html">Quit</a></span></nav>
+    <div id="backgroundContainer"></div>
+
+</body>
+</html>

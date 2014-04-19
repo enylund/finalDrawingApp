@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Drawing</title>
+<script type="text/javascript" src="paper-full.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://connect.soundcloud.com/sdk.js"></script>
+<link rel="stylesheet" type="text/css" href="MyFontsWebfontsKit.css">
+<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+
+<script type="text/javascript">
+	
+	//
+	// Initiate socket.io
+	var socket = io.connect('http://localhost:8888');
+	
+	 SC.initialize({
+             client_id: 'a2befdf458b195d9dc90a309e9015eb4'
+       });
+	
+	
+	socket.on('bdInfo', function(data) {
+		
+		
+		$("#svgDisplay").append("<img data-track="+data.trackLink+" src='"+data.dataURLInfo+"' />");
+
+	});
+	
+
+	
+	$( document ).ready(function() {
+		
+		$(window).resize(function (){
+	        $('#svgDisplay').css({
+	            position:'absolute',
+	            left: (($(window).width() - $('#svgDisplay').outerWidth())/2),
+	            top: '22%'
+	        });
+	    });
+	    $(window).resize();
+		
+			$('#svgDisplay').on('mousedown', "img", function() {
+				var trackToPlay = $(this).data("track");
+				console.log(this);
+				SC.stream(trackToPlay, function(sound){
+					
+						  
+							  sound.play();
+							 setTimeout(function(){sound.stop();},9000);
+				});
+			});
+    });
+	
+	
+</script>
+
+	<div id="svgDisplay"></div>
+	<nav><span id='archive'>Archive</span><span id="drawCanvas"><a href="draw.html">Draw</a></span></nav>
+	<div id="track_test"></div>
+</body>
+</html>
