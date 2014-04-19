@@ -15,7 +15,7 @@
 	
 	  //
 	  // Initiate socket.io
-	  var socket = io.connect('http://localhost:5000');
+	  var socket = io.connect('http://desolate-citadel-2475.herokuapp.com/');
 	
 	  // Define all tools globally
 	  var tool = new paper.Tool();
@@ -150,7 +150,7 @@
 								
 								socket.on('refreshPage', function(data) {
 									console.log(data);
-									window.location.href = "http://localhost:5000/";
+									window.location.href = "http://desolate-citadel-2475.herokuapp.com/";
 								});
          	            });
 		
