@@ -12,10 +12,10 @@
 <body>
 
 <script type="text/javascript">
-	var host = location.origin.replace(/^http/, 'ws')
+	
 	//
 	// Initiate socket.io
-	var socket = new WebSocket(host);
+	var socket = io.connect('http://localhost:5000');
 	
 	 SC.initialize({
              client_id: 'a2befdf458b195d9dc90a309e9015eb4'

@@ -13,10 +13,9 @@
 
 <script type="text/javascript">
 	
-var host = location.origin.replace(/^http/, 'ws')
-//
-// Initiate socket.io
-var socket = new WebSocket(host);
+	  //
+	  // Initiate socket.io
+	  var socket = io.connect('http://localhost:5000');
 	
 	  // Define all tools globally
 	  var tool = new paper.Tool();

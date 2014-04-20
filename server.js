@@ -11,7 +11,7 @@ var router = express();
 var server = http.createServer(router);
 
 // Tell Socket.IO to listen for websockets
-var drawing_room = new WebSocketServer({server: server});
+var drawing_room = io.listen(server);
 
 // Tell Express to serve static assets
 router.use(express.static(path.resolve(__dirname, 'client')));
