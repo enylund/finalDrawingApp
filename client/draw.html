@@ -35,22 +35,38 @@
 
             //console.log(requestedTrack);
             //$("#jukeboxName").html(requestedTrack);
+				var colorNumber = Math.floor(1 + Math.random() * 4);
 
-			var genreNumber = Math.floor(1 + Math.random() * 4);
+				switch (colorNumber)
+				{
+				case 1:
+				  y="green";
+				  break;
+				case 2:
+				  y="pink";
+				  break;
+				case 3:
+				  y="LightSkyBlue ";
+				  break;
+				case 4:
+				  y="MintCream";
+				  break;
+				}
+				console.log(y);
+			$("body").css( "background-color", y );
+
+			var genreNumber = Math.floor(1 + Math.random() * 3);
 
 			switch (genreNumber)
 			{
 			case 1:
-			  x="hiphop";
+			  x="gagaku";
 			  break;
 			case 2:
-			  x="classical";
+			  x="drone";
 			  break;
 			case 3:
-			  x="punk";
-			  break;
-			case 4:
-			  x="soul";
+			  x="gold";
 			  break;
 			}
 			console.log(x);
@@ -164,7 +180,7 @@
 	</script>
 
 	<canvas id="myCanvas"></canvas>
-	<nav><span id='refresh'>Refresh</span><span id="save">Save</span><span id="save"><a href="index.html">Quit</a></span></nav>
+	<nav><span id='refresh'>Refresh</span><span id="save">Save</span><span id="save"></nav>
     <div id="backgroundContainer"></div>
 
 </body>

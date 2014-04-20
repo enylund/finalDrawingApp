@@ -24,6 +24,70 @@
 
 $( document ).ready(function() {
 	
+$("#about-page").hide();
+
+$("#about-page").click(function(){
+	$(this).toggle();
+	
+});
+
+$("#about-button").click(function(){
+	$("#about-page").toggle();
+	
+});
+
+
+	var colorNumber = Math.floor(1 + Math.random() * 4);
+
+	switch (colorNumber)
+	{
+	case 1:
+	  y="green";
+	  break;
+	case 2:
+	  y="pink";
+	  break;
+	case 3:
+	  y="LightSkyBlue ";
+	  break;
+	case 4:
+	  y="gold";
+	  break;
+	}
+	console.log(y);
+$("body").css( "background-color", y );
+	
+	$('#listenAll').click(function(){
+
+		$('img').each(function( index ) {
+		
+			var trackToPlay = $(this).data("track");
+			var theImgTag = $(this);
+
+				SC.stream(trackToPlay, function(sound){
+					 sound.play();
+ 					
+				});
+			});
+
+	});
+	
+	$('#listenNone').click(function(){
+
+		$('img').each(function( index ) {
+		
+			var trackToPlay = $(this).data("track");
+			var theImgTag = $(this);
+			console.log("stop");
+
+				SC.stream(trackToPlay, function(sound){
+					 sound.pause();
+ 					
+				});
+			});
+
+	});
+	
 	
 	
 	socket.on('bdInfo', function(data) {
@@ -43,13 +107,13 @@ $( document ).ready(function() {
 	
 
 	
-	 $('#svgDisplay').on("mouseover", "img", function() {
-	 		$( this ).css( "z-index", "10000" );
-	 	});
-	 	$('#svgDisplay').on("mouseleave", "img", function() {
-	 		$( this ).css( "z-index", "1" );
-	 	});
-		
+	 // $('#svgDisplay').on("mouseover", "img", function() {
+	 // 	 		$( this ).css( "z-index", "10000" );
+	 // 	 	});
+	 // 	 	$('#svgDisplay').on("mouseleave", "img", function() {
+	 // 	 		$( this ).css( "z-index", "1" );
+	 // 	 	});
+	 // 		
 		
 		
 		$(window).resize(function (){
@@ -69,11 +133,6 @@ $( document ).ready(function() {
  	 					theImgTag.mouseleave(function(){
 	 							sound.pause();
 						});
-					  		
-						 
-						
-					
-						
 					});
 			});
     });
@@ -82,7 +141,8 @@ $( document ).ready(function() {
 </script>
 
 	<div id="svgDisplay"></div>
-	<nav><span id='archive'>Archive</span><span id="drawCanvas"><a href="draw.html">Draw</a></span></nav>
+	<nav><span id="drawCanvas"><a href="draw.html">Draw</a></span><span id="about-button">About</span></nav>
 	<div id="track_test"></div>
+	<section id="about-page"><div id="about-title">Composition With<br>Electronic Drawing</div><div id="about-body">The Theater of Eternal Music is a multi-media performance group who, in its 1960s–1970s heyday included at various times La Monte Young, Marian Zazeela, Tony Conrad, Angus MacLise, Terry Jennings, John Cale, Billy Name, Jon Hassell, Alex Dea and others, each from various backgrounds (classical composition and performance, painting, mathematics, poetry, jazz, etc.).</div> </section>
 </body>
 </html>
