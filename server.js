@@ -11,7 +11,7 @@ var router = express();
 var server = http.createServer(router);
 
 // Tell Socket.IO to listen for websockets
-var drawing_room = io.listen(server);
+var drawing_room = new WebSocketServer({server: server});
 
 // Tell Express to serve static assets
 router.use(express.static(path.resolve(__dirname, 'client')));
@@ -25,7 +25,7 @@ drawing_room
   .on('connection', function(socket) {
 	
 
-	images.find().sort({time: -1}).limit(1).each(function(err, message) {
+	images.find().sort({time: -1}).limit(15).each(function(err, message) {
 	         if (err) throw err;
 	         // An idiosyncracy of Mongo is that the last result will always be null.
 	         // Ignore that one. 

@@ -12,32 +12,43 @@
 <body>
 
 <script type="text/javascript">
-	
+	var host = location.origin.replace(/^http/, 'ws')
 	//
 	// Initiate socket.io
-	var socket = io.connect('http://localhost:5000');
+	var socket = new WebSocket(host);
 	
 	 SC.initialize({
              client_id: 'a2befdf458b195d9dc90a309e9015eb4'
        });
+
+
+$( document ).ready(function() {
+	
 	
 	
 	socket.on('bdInfo', function(data) {
 		
+		var windowWidth = ($(window).width())/2;
+		var windowHeight = ($(window).height())/2;
 		
-		$("#svgDisplay").append("<img data-background="+data.background+" data-track="+data.trackLink+" src='"+data.dataURLInfo+"' />");
+		var xPosition = Math.floor(1 + Math.random() * windowWidth);
+		var yPosition = Math.floor(1 + Math.random() * windowHeight);
 		
-		console.log(data.background);
-		$('#svgDisplay').css({
-            position:'absolute',
-            left: (($(window).width() - $('#svgDisplay').outerWidth())/2)
-        });
-
+		
+		$("#svgDisplay").append("<img style='' data-background="+data.background+" data-track="+data.trackLink+" src='"+data.dataURLInfo+"' />");
+		
+	
 	});
 	
+	
 
 	
-	$( document ).ready(function() {
+	 $('#svgDisplay').on("mouseover", "img", function() {
+	 		$( this ).css( "z-index", "10000" );
+	 	});
+	 	$('#svgDisplay').on("mouseleave", "img", function() {
+	 		$( this ).css( "z-index", "1" );
+	 	});
 		
 		
 		
@@ -49,25 +60,20 @@
 	    });
 	    $(window).resize();
 		
-			$('#svgDisplay').on('mousedown', "img", function() {
+			$('#svgDisplay').on('mouseenter', "img", function() {
 				var trackToPlay = $(this).data("track");
-				var imageBackground = $(this).data("background");
-				
-				
-				
-				console.log(imageBackground);
-				console.log(this);
-			
+				var theImgTag = $(this);
+
 					SC.stream(trackToPlay, function(sound){
- 	 				$(this).click(function() {
-					  
-						  sound.play();
-						$(this).click(function() {
+						 sound.play();
+ 	 					theImgTag.mouseleave(function(){
+	 							sound.pause();
+						});
+					  		
 						 
-							  sound.pause();
 						
-						});
-						});
+					
+						
 					});
 			});
     });
